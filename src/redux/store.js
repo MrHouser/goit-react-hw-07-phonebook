@@ -26,7 +26,7 @@ const middleware = [
 ];
 
 const rootReducer = combineReducers({
-  items: contactsReducer,
+  contacts: contactsReducer,
   filter: filterReducer,
 });
 

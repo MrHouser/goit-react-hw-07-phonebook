@@ -1,6 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchContacts } from './redux/contactsOperations';
+import {
+  getContacts,
+  getFilter,
+  getFilteredContacts,
+  getLoading,
+} from './redux/selectors';
 import Form from './components/Form/Form';
 import Contacts from './components/Contacts/Contacts';
 import Search from './components/Search/Search';
@@ -12,13 +18,18 @@ function App() {
     dispatch(fetchContacts());
   }, []);
 
-  const contacts = useSelector(state => state.items);
-  const filter = useSelector(state => state.filter);
+  const contacts = useSelector(state => getContacts(state));
+  const filter = useSelector(state => getFilter(state));
+  const isLoading = useSelector(state => getLoading(state));
+  const filteredContacts = useSelector(state => getFilteredContacts(state));
 
-  const lowerCasedFilter = filter.toLowerCase();
-  const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(lowerCasedFilter),
-  );
+  const setLoader = () => {
+    if (isLoading) {
+      document.body.style.cursor = 'wait';
+    } else document.body.style.cursor = 'default';
+  };
+
+  setLoader();
 
   return (
     <div className="wrapper">
